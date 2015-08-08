@@ -1,4 +1,6 @@
-# TESTBOT for Slack
+# PINGBOT for Slack
+
+![PINGBOT](https://i.imgur.com/sc8XvQu.png)
 
 ## Installation
 
@@ -22,19 +24,17 @@ Rename `config.sample.js` to `config.js` and edit it with your own config.
 
 Run `node /path/to/bot.js /path/to/config.js` to get it running.
 
-Invite testbot to your channel!
+Invite pingbot to your channel!
 
 ### ... or with Docker
 
 You can also use this with Docker! Update the `Dockerfile` with your email address.
 
-    docker build -t your-name/testbot .
-    docker run -d your-name/testbot
+    docker build -t your-name/pingbot .
+    docker run -d your-name/pingbot
 
 Nice.
 
 ## Usage
 
-The testbot will respond with whatever the message following the bot trigger along with the user and the channel. For example, if you set the trigger as `.test`, a message of `.test yo` will respond with "[user] said 'yo' in [channel]".
-
-![Imgur](http://i.imgur.com/O0ESEpz.png)
+Update the `config.js` file with your teams and then use `.ping team` to ping all of the members on that team!
