@@ -71,6 +71,14 @@ function say(with_what, where) {
   }, getRandomInt(500, 1200));
 }
 
+function strip_trigger(text) {
+  return strip_text(text, bot_trigger);
+}
+
+function strip_text(text, to_strip) {
+  return text.replace(to_strip + ' ', '');
+}
+
 // handle an incoming message object
 function handle_message(message_obj) {
   var chatline = message_obj.text.trim();
@@ -78,9 +86,19 @@ function handle_message(message_obj) {
   if (chatline.lastIndexOf(bot_trigger, 0)  === 0) {
     // where did this message come from??
     var where = slack.getChannelGroupOrDMByID(message_obj.channel);
-    ping_team(strip_trigger(chatline), where);
+    process_team_message(strip_trigger(chatline), where);
   }
 
+}
+
+function process_team_message(team, where) {
+  // Add member
+  if (team.lastIndexOf('add', 0) === 0) {
+    // Team has the full text
+    process_member_add(team, where);
+  } else {
+    ping_team(team, where);
+  }
 }
 
 function ping_team(team, where) {
@@ -94,12 +112,28 @@ function ping_team(team, where) {
   }
 }
 
-function build_response_message(user, where, what) {
-  return user.name + " said '" + strip_trigger(what) + "' in " + where.name;
+function process_member_add(text, where) {
+  text = strip_text(text, 'add');
+  text_arr = text.split(' ');
+  team = text_arr[0];
+
+  if (team in teams) {
+    member = text_arr[1];
+    add_member(team, member, where);
+  } else {
+    say ('Hey, that team doesn\'t exist!', where);
+  }
 }
 
-function strip_trigger(text) {
-  return text.replace(bot_trigger + ' ', '');
+function add_member(team, member, where) {
+  user = slack.getUserByName(text_arr[1]);
+
+  if (user) {
+    teams[team].push(member);
+    say(member + ' was successfully added to ' + team + '!', where);
+  } else {
+    say('That user doesn\'t exist!', where);
+  }
 }
 
 // actually log in and connect!
