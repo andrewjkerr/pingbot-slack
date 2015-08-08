@@ -25,6 +25,7 @@ var config = require(config_file);
 // primary bot config
 var bot_name = config.bot_name;
 var bot_trigger = config.bot_trigger;
+var teams = config.teams;
 
 // init new instance of the slack real time client
 var slack = new slack_client(config.api_token);
@@ -75,12 +76,22 @@ function handle_message(message_obj) {
   var chatline = message_obj.text.trim();
 
   if (chatline.lastIndexOf(bot_trigger, 0)  === 0) {
-    // where did this message come from and from which user??
+    // where did this message come from??
     var where = slack.getChannelGroupOrDMByID(message_obj.channel);
-    var user = slack.getUserByID(message_obj.user);
-    say(build_response_message(user, where, chatline), where);
+    ping_team(strip_trigger(chatline), where);
   }
 
+}
+
+function ping_team(team, where) {
+  if (team in teams) {
+    members = teams[team];
+
+    // hacky way to add an @ to every member
+    say('Hey @' + members.join(', @') + '!!', where);
+  } else {
+    say('Whoops, that team doesn\'t exist!', where);
+  }
 }
 
 function build_response_message(user, where, what) {

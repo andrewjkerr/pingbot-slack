@@ -1,5 +1,9 @@
 module.exports = {
   api_token: 'xxx',
-  bot_name: 'testbot',
-  bot_trigger: '.test'
+  bot_name: 'pingbot',
+  bot_trigger: '.ping',
+  teams : {
+    security: ['andrew', 'jill'],
+    product: ['jane', 'john']
+  }
 }
