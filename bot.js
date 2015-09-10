@@ -25,6 +25,7 @@ if (file_name.lastIndexOf('/', 0)  === 0) {
 } else {
   var config_file = './' + process.argv[2];
 }
+
 var config = require(config_file);
 
 // primary bot config
