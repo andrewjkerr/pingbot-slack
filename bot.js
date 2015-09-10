@@ -19,7 +19,12 @@ if (process.argv.length < 3 || process.argv[2] == undefined) {
 
 // load bot config
 console.log('requiring config in file: ' + process.argv[2]);
-var config_file = './' + process.argv[2];
+var file_name = process.argv[2];
+if (file_name.lastIndexOf('/', 0)  === 0) {
+  var config_file = file_name;
+} else {
+  var config_file = './' + process.argv[2];
+}
 var config = require(config_file);
 
 // primary bot config

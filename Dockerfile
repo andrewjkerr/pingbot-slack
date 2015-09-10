@@ -1,5 +1,5 @@
 FROM node:0.10
-MAINTAINER your-name@tumblr.com
+MAINTAINER me+docker@andrewjkerr.com
 RUN mkdir /app
 COPY package.json /app/
 COPY bot.js /app/
